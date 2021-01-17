@@ -1,0 +1,26 @@
+version: '3.5'
+services:
+  gnr-db:
+    image: mysql:5.7
+    volumes:
+      - ./db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: PASSWORD
+      MYSQL_DATABASE: gnr
+    networks:
+      - djinn_net
+  gnr:
+    build: .
+    ports:
+      - '3423:3423'
+    expose:
+      - '3423'
+    command: npm run start
+    networks:
+      - djinn_net
+
+networks:
+  djinn_net:
+    name: djinn_net
+    external: true

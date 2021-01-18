@@ -8,6 +8,7 @@ export default new Vuex.Store({
 	state: {
 		shows: [],
 		filteredShows: [],
+		searchTerm: '',
 	},
 	mutations: {
 		setShows(state, shows) {
@@ -22,18 +23,25 @@ export default new Vuex.Store({
 				state.filteredShows.push({ id: '', date: '', name: shows[0].name });
 			}
 		},
+		setSearchTerm(state, searchTerm) {
+			state.searchTerm = searchTerm;
+		},
 	},
 	actions: {
-		async getShows(context) {
-			const { data } = await axios.get('http://10.0.0.49:3423/show/getallshows');
+		async setShows(context) {
+			const { data } = await axios.get('http://10.0.0.49:3423/show/getshows');
 			context.commit('setShows', data.success);
 		},
 		setFilteredShows(context, shows) {
 			context.commit('setFilteredShows', shows);
 		},
+		setSearchTerm(context, searchTerm) {
+			context.commit('setSearchTerm', searchTerm);
+		},
 	},
 	getters: {
 		shows: state => state.shows,
 		filteredShows: state => state.filteredShows,
+		searchTerm: state => state.searchTerm,
 	},
 });

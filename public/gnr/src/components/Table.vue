@@ -1,26 +1,21 @@
 <template>
 	<div>
-		<form class="row g-3">
-			<div class="col-auto">
-				<label for="date" class="visually-hidden">Show Date</label>
-				<input type="text" class="form-control" id="date" v-model="newShowDate" />
-			</div>
-			<div class="col-auto">
-				<label for="name" class="visually-hidden">Show Name</label>
-				<input type="text" class="form-control" id="name" v-model="newShowName" />
-			</div>
-			<div class="col-auto align-self-end">
-				<a @click="addShow" class="btn btn-primary">Add Show</a>
-			</div>
-		</form>
+		<EditShowModal
+			:clickedShowId="clickedShowId"
+			v-if="showModal"
+			@close="showModal = false"
+			@updateShowList="updateShowList"
+		/>
+		<AddShow @updateShowList="updateShowList" />
 		<table class="table mt-2">
 			<thead>
 				<tr>
 					<th scope="col" style="width: 5.00%">#</th>
 					<th scope="col" style="width: 10.00%">Show Date</th>
-					<th scope="col" style="width: 55.00%">Show Name</th>
+					<th scope="col" style="width: 50.00%">Show Name</th>
 					<th scope="col" style="width: 10.00%">Obtained</th>
 					<th scope="col" style="width: 15.00%">Update Status</th>
+					<th scope="col" style="width: 5.00%">Edit</th>
 					<th scope="col" style="width: 5.00%">Delete</th>
 				</tr>
 			</thead>
@@ -38,6 +33,7 @@
 					<td></td>
 					<td></td>
 					<td></td>
+					<td></td>
 				</tr>
 			</tbody>
 			<tbody v-else-if="!filteredShowList.length">
@@ -50,6 +46,9 @@
 						<a class="btn btn-primary" @click="updateStatus(show.id, show.obtained)">{{
 							show.obtained === 1 ? 'I Lost It..' : 'I Got It!'
 						}}</a>
+					</td>
+					<td>
+						<a @click="toggleModal(show.id)" class="btn btn-info">Edit</a>
 					</td>
 					<td><a @click="deleteShow(show.id)" class="btn btn-danger">Delete</a></td>
 				</tr>
@@ -83,6 +82,9 @@
 								: ''
 						}}</a>
 					</td>
+					<td>
+						<a @click="toggleModal(show.id)" class="btn btn-info">Edit</a>
+					</td>
 					<td><a @click="deleteShow(show.id)" class="btn btn-danger">Delete</a></td>
 				</tr>
 			</tbody>
@@ -91,42 +93,56 @@
 </template>
 
 <script>
+import AddShow from './AddShow.vue';
+import EditShowModal from './EditShowModal.vue';
+
 export default {
-	name: 'List',
+	name: 'Table',
+	components: {
+		AddShow,
+		EditShowModal,
+	},
 	data() {
 		return {
 			showList: [],
 			filteredShowList: [],
-			newShowName: '',
-			newShowDate: '',
+			showModal: false,
+			clickedShowId: '',
 		};
 	},
 	methods: {
+		toggleModal(id) {
+			this.clickedShowId = id;
+			this.showModal = true;
+		},
+		updateShowList() {
+			this.showList = this.$store.getters.shows;
+			this.checkFilteredShows();
+		},
+		checkFilteredShows() {
+			if (this.filteredShowList.length) {
+				this.filteredShowList = this.showList.filter(
+					show =>
+						show.name.includes(this.$store.getters.searchTerm) ||
+						show.date.includes(this.$store.getters.searchTerm)
+				);
+			}
+		},
 		async updateStatus(id, status) {
 			await window.axios.post('http://10.0.0.49:3423/show/updatestatus', { id, status });
-			await this.$store.dispatch('getShows');
-			this.showList = this.$store.getters.shows;
+			await this.$store.dispatch('setShows');
+			this.updateShowList();
 		},
-		async addShow() {
-			if (this.newShowName && this.newShowDate)
-				await window.axios.post('http://10.0.0.49:3423/show/createshow', {
-					name: this.newShowName,
-					date: this.newShowDate,
-				});
-			this.newShowName = '';
-			this.newShowDate = '';
-			await this.$store.dispatch('getShows');
-			this.showList = this.$store.getters.shows;
-		},
+		async editShow() {},
 		async deleteShow(id) {
 			await window.axios.post('http://10.0.0.49:3423/show/deleteshow', { id });
-			await this.$store.dispatch('getShows');
-			this.showList = this.$store.getters.shows;
+			await this.$store.dispatch('setShows');
+			this.updateShowList();
 		},
 	},
 	async mounted() {
-		await this.$store.dispatch('getShows');
-		this.showList = this.$store.getters.shows;
+		await this.$store.dispatch('setShows');
+		this.updateShowList();
 	},
 	watch: {
 		'$store.state.filteredShows': function() {

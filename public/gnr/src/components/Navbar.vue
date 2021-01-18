@@ -3,28 +3,20 @@
 		<div class="container-fluid">
 			<a class="navbar-brand" href="#">🔫 GnR Vault 🌹</a>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<!-- <li class="nav-item">
-						<a class="nav-link" href="#">Create New Show</a>
-					</li> -->
-				</ul>
-				<form class="d-flex ml-auto">
-					<input
-						v-model="searchTerm"
-						@input="searchInDB"
-						class="form-control me-2"
-						placeholder="Search..."
-						aria-label="Search"
-					/>
-				</form>
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+				<Search />
 			</div>
 		</div>
 	</nav>
 </template>
 
 <script>
+import Search from './Search.vue';
 export default {
 	name: 'Navbar',
+	components: {
+		Search,
+	},
 	data() {
 		return {
 			searchTerm: '',

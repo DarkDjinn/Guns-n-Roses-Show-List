@@ -1,6 +1,7 @@
 version: '3.5'
 services:
   gnr-db:
+    # beercan1989/arm-mysql:latest - Image for Raspberry Pi
     image: mysql:5.7
     volumes:
       - ./db_data:/var/lib/mysql

@@ -4,7 +4,7 @@
 			:value="this.$store.getters.searchTerm"
 			@input="searchInDB"
 			class="form-control me-2"
-			placeholder="Search..."
+			placeholder="Search By Name / Date..."
 			aria-label="Search"
 		/>
 	</form>

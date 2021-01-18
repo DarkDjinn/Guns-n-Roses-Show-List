@@ -8,6 +8,23 @@
 			<label for="name" class="visually-hidden">Show Name</label>
 			<input type="text" class="form-control" id="name" v-model="newShowName" />
 		</div>
+		<div class="col-auto">
+			<label for="type" class="visually-hidden">File Type</label>
+			<select class="custom-select" v-model="newFileType">
+				<option value="Audio">Audio</option>
+				<option value="Video">Video</option>
+			</select>
+		</div>
+		<div class="col-auto">
+			<label for="quality" class="visually-hidden">File Quality</label>
+			<select class="custom-select" v-model="newFileQuality">
+				<option value="Very Good">Very Good</option>
+				<option value="Good">Good</option>
+				<option value="Mediocre">Mediocre</option>
+				<option value="Bad">Bad</option>
+				<option value="Very bad">Very Bad</option>
+			</select>
+		</div>
 		<div class="col-auto align-self-end">
 			<a @click="addShow" class="btn btn-primary">Add Show</a>
 		</div>
@@ -21,6 +38,8 @@ export default {
 		return {
 			newShowName: '',
 			newShowDate: '',
+			newFileType: '',
+			newFileQuality: '',
 		};
 	},
 	methods: {
@@ -29,6 +48,8 @@ export default {
 				await window.axios.post('http://10.0.0.49:3423/show/createshow', {
 					name: this.newShowName,
 					date: this.newShowDate,
+					fileType: this.newFileType,
+					quality: this.newFileQuality,
 				});
 			this.newShowName = '';
 			this.newShowDate = '';

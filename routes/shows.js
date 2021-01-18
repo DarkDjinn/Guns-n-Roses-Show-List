@@ -7,8 +7,17 @@ module.exports = {
 	createShow: async (req, res) => {
 		const date = req.body.date;
 		const name = req.body.name;
+		const fileType = req.body.fileType;
+		const quality = req.body.quality;
 		try {
-			const q = squel.insert().into('shows').set('name', name).set('date', date).set('obtained', 0);
+			const q = squel
+				.insert()
+				.into('shows')
+				.set('name', name)
+				.set('date', date)
+				.set('obtained', 0)
+				.set('file_type', fileType)
+				.set('quality', quality);
 			await DBQuery(q.toString());
 			res.json({ success: 'true' });
 		} catch (err) {
@@ -19,12 +28,16 @@ module.exports = {
 		const id = req.body.id;
 		const date = req.body.date;
 		const name = req.body.name;
+		const fileType = req.body.fileType;
+		const quality = req.body.quality;
 		try {
 			const q = squel
 				.update()
 				.table('shows')
 				.set('name', name)
 				.set('date', date)
+				.set('file_type', fileType)
+				.set('quality', quality)
 				.where(`id = ${id}`);
 			await DBQuery(q.toString());
 			res.json({ success: 'true' });

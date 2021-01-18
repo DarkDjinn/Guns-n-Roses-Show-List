@@ -20,6 +20,23 @@
 							<label for="name">Show Name</label>
 							<input type="text" class="form-control" id="name" v-model="newShowName" />
 						</div>
+						<div class="form-group">
+							<label for="type" class="visually-hidden">File Type</label>
+							<select class="custom-select" v-model="newFileType">
+								<option value="Audio">Audio</option>
+								<option value="Video">Video</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="quality" class="visually-hidden">File Quality</label>
+							<select class="custom-select" v-model="newFileQuality">
+								<option value="Very Good">Very Good</option>
+								<option value="Good">Good</option>
+								<option value="Mediocre">Mediocre</option>
+								<option value="Bad">Bad</option>
+								<option value="Very bad">Very Bad</option>
+							</select>
+						</div>
 						<div class="col-auto align-self-end d-flex justify-content-between">
 							<a @click="addShow" class="btn btn-primary">Submit</a>
 							<a @click="$emit('close')" class="btn btn-danger">
@@ -48,6 +65,8 @@ export default {
 			showEditShowModal: false,
 			newShowName: '',
 			newShowDate: '',
+			newFileType: '',
+			newFileQuality: '',
 		};
 	},
 	methods: {
@@ -57,6 +76,8 @@ export default {
 					id: this.clickedShowId,
 					name: this.newShowName,
 					date: this.newShowDate,
+					fileType: this.newFileType,
+					quality: this.newFileQuality,
 				});
 			await this.$store.dispatch('setShows');
 			this.$emit('updateShowList');
@@ -69,6 +90,8 @@ export default {
 		);
 		this.newShowName = data.success[0].name;
 		this.newShowDate = data.success[0].date;
+		this.newFileType = data.success[0].file_type;
+		this.newFileQuality = data.success[0].quality;
 	},
 };
 </script>

@@ -12,7 +12,9 @@
 				<tr>
 					<th scope="col" style="width: 5.00%">#</th>
 					<th scope="col" style="width: 10.00%">Show Date</th>
-					<th scope="col" style="width: 50.00%">Show Name</th>
+					<th scope="col" style="width: 40.00%">Show Name</th>
+					<th scope="col" style="width: 5.00%">Video/Audio</th>
+					<th scope="col" style="width: 5.00%">Quality</th>
 					<th scope="col" style="width: 10.00%">Obtained</th>
 					<th scope="col" style="width: 15.00%">Update Status</th>
 					<th scope="col" style="width: 5.00%">Edit</th>
@@ -34,6 +36,8 @@
 					<td></td>
 					<td></td>
 					<td></td>
+					<td></td>
+					<td></td>
 				</tr>
 			</tbody>
 			<tbody v-else-if="!filteredShowList.length">
@@ -41,6 +45,8 @@
 					<th scope="row">{{ show.id }}</th>
 					<td>{{ show.date }}</td>
 					<td>{{ show.name }}</td>
+					<td>{{ show.file_type }}</td>
+					<td>{{ show.quality }}</td>
 					<td>{{ show.obtained === 1 ? '&#x2713;' : '&#10060;' }}</td>
 					<td>
 						<a class="btn btn-primary" @click="updateStatus(show.id, show.obtained)">{{
@@ -64,6 +70,8 @@
 					<th scope="row">{{ show.id }}</th>
 					<td>{{ show.date ? show.date : '' }}</td>
 					<td>{{ show.name }}</td>
+					<td>{{ show.file_type }}</td>
+					<td>{{ show.quality }}</td>
 					<td>
 						{{
 							show.obtained === 1 || show.obtained === 0

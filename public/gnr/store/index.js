@@ -29,7 +29,7 @@ export default new Vuex.Store({
 	},
 	actions: {
 		async setShows(context) {
-			const { data } = await axios.get('http://10.0.0.49:3423/show/getshows');
+			const { data } = await axios.get('http://10.0.0.49/show/getshows');
 			context.commit('setShows', data.success);
 		},
 		setFilteredShows(context, shows) {

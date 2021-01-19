@@ -137,13 +137,13 @@ export default {
 			}
 		},
 		async updateStatus(id, status) {
-			await window.axios.post('http://10.0.0.49:3423/show/updatestatus', { id, status });
+			await window.axios.post('http://10.0.0.49/show/updatestatus', { id, status });
 			await this.$store.dispatch('setShows');
 			this.updateShowList();
 		},
 		async editShow() {},
 		async deleteShow(id) {
-			await window.axios.post('http://10.0.0.49:3423/show/deleteshow', { id });
+			await window.axios.post('http://10.0.0.49/show/deleteshow', { id });
 			await this.$store.dispatch('setShows');
 			this.updateShowList();
 		},

@@ -72,7 +72,7 @@ export default {
 	methods: {
 		async addShow() {
 			if (this.newShowName && this.newShowDate)
-				await window.axios.post('http://10.0.0.49/gnr/show/updateshow', {
+				await window.axios.post('http://10.0.0.49:3423/gnr/show/updateshow', {
 					id: this.clickedShowId,
 					name: this.newShowName,
 					date: this.newShowDate,
@@ -86,7 +86,7 @@ export default {
 	},
 	async mounted() {
 		const { data } = await window.axios.get(
-			`http://10.0.0.49/gnr/show/getshows/${this.clickedShowId}`
+			`http://10.0.0.49:3423/gnr/show/getshows/${this.clickedShowId}`
 		);
 		this.newShowName = data.success[0].name;
 		this.newShowDate = data.success[0].date;

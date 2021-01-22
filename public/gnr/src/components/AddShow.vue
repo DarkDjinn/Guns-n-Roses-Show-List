@@ -45,7 +45,7 @@ export default {
 	methods: {
 		async addShow() {
 			if (this.newShowName && this.newShowDate)
-				await window.axios.post('http://10.0.0.49/show/createshow', {
+				await window.axios.post('http://10.0.0.49/gnr/show/createshow', {
 					name: this.newShowName,
 					date: this.newShowDate,
 					fileType: this.newFileType,

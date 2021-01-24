@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import config from '../../config';
+
 export default {
 	name: 'AddShow',
 	data() {
@@ -45,7 +47,7 @@ export default {
 	methods: {
 		async addShow() {
 			if (this.newShowName && this.newShowDate)
-				await window.axios.post('http://10.0.0.49:3423/gnr/show/createshow', {
+				await window.axios.post(`${config.API_URL}/gnr/show/createshow`, {
 					name: this.newShowName,
 					date: this.newShowDate,
 					fileType: this.newFileType,

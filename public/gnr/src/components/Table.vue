@@ -113,6 +113,7 @@
 <script>
 import AddShow from './AddShow.vue';
 import EditShowModal from './EditShowModal.vue';
+import config from '../../config';
 
 export default {
 	name: 'Table',
@@ -151,7 +152,7 @@ export default {
 			}
 		},
 		async updateStatus(id, status) {
-			await window.axios.post('http://10.0.0.49:3423/gnr/show/updatestatus', { id, status });
+			await window.axios.post(`${config.API_URL}/gnr/show/updatestatus`, { id, status });
 			await this.$store.dispatch('setShows');
 			this.updateShowList();
 		},
@@ -168,7 +169,7 @@ export default {
 			this.updateShowList();
 		},
 		async deleteShow(id) {
-			await window.axios.post('http://10.0.0.49:3423/gnr/show/deleteshow', { id });
+			await window.axios.post(`${config.API_URL}/gnr/show/deleteshow`, { id });
 			await this.$store.dispatch('setShows');
 			this.updateShowList();
 		},

@@ -99,7 +99,7 @@ module.exports = {
 			default:
 				break;
 		}
-		console.log(q.toString());
+
 		const shows = await DBQuery(q.toString());
 		res.json({ success: shows });
 	},

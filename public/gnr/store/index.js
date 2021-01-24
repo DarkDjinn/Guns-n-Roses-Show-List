@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import config from '../config';
 
 Vue.use(Vuex);
 
@@ -30,7 +31,7 @@ export default new Vuex.Store({
 	actions: {
 		async setShows(context, sortBy) {
 			const { data } = await axios.get(
-				`http://10.0.0.49:3423/gnr/show/getshows${
+				`${config.API_URL}/gnr/show/getshows${
 					sortBy && sortBy.name ? `?sort=${sortBy.name}&direction=${sortBy.direction}` : ''
 				}`
 			);

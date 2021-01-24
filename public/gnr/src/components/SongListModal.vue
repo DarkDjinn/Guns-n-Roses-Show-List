@@ -4,7 +4,7 @@
 			<div class="modal-content">
 				<!-- Modal Header -->
 				<div class="modal-header">
-					<h4 class="modal-title">Song List</h4>
+					<h4 class="modal-title">Song List for {{ clickedShowName }}</h4>
 					<button type="button" class="close" @click="$emit('close')" data-dismiss="modal">
 						×
 					</button>
@@ -68,6 +68,7 @@ export default {
 	name: 'SongListModal',
 	props: {
 		clickedShowId: Number,
+		clickedShowName: String,
 	},
 	data() {
 		return {
@@ -97,19 +98,6 @@ export default {
 			});
 			this.fetchSongs();
 		},
-		// async addSong() {
-		// 	if (this.newShowName && this.newShowDate)
-		// 		await window.axios.post(`${config.API_URL}/gnr/show/updateshow`, {
-		// 			id: this.clickedShowId,
-		// 			name: this.newShowName,
-		// 			date: this.newShowDate,
-		// 			fileType: this.newFileType,
-		// 			quality: this.newFileQuality,
-		// 		});
-		// 	await this.$store.dispatch('setShows');
-		// 	this.$emit('updateShowList');
-		// 	this.$emit('close');
-		// },
 		async fetchSongs() {
 			const { data } = await window.axios.get(
 				`${config.API_URL}/gnr/songs/getshowsongs/${this.clickedShowId}`

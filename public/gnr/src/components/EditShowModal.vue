@@ -4,7 +4,7 @@
 			<div class="modal-content">
 				<!-- Modal Header -->
 				<div class="modal-header">
-					<h4 class="modal-title">Edit Show</h4>
+					<h4 class="modal-title">Edit {{ clickedShowName }}</h4>
 					<button type="button" class="close" @click="$emit('close')" data-dismiss="modal">
 						×
 					</button>
@@ -61,6 +61,7 @@ export default {
 	name: 'EditShowModal',
 	props: {
 		clickedShowId: Number,
+		clickedShowName: String,
 	},
 	data() {
 		return {

@@ -2,11 +2,18 @@
 	<div>
 		<EditShowModal
 			:clickedShowId="clickedShowId"
-			v-if="showModal"
-			@close="showModal = false"
+			v-if="showEditModal"
+			@close="showEditModal = false"
 			@updateShowList="updateShowList"
 		/>
+		<SongListModal
+			:clickedShowId="clickedShowId"
+			v-if="showSongListModal"
+			@close="showSongListModal = false"
+		/>
 		<AddShow @updateShowList="updateShowList" />
+		<p>* Click on the show row to open the song list for that show.</p>
+		<p>** Click on a header to order by it.</p>
 		<table class="table mt-2">
 			<thead>
 				<tr>
@@ -52,19 +59,21 @@
 			</tbody>
 			<tbody v-else-if="!filteredShowList.length">
 				<tr v-for="show in showList" :key="show.id">
-					<th scope="row">{{ show.id }}</th>
-					<td>{{ show.date }}</td>
-					<td>{{ show.name }}</td>
-					<td>{{ show.file_type }}</td>
-					<td>{{ show.quality }}</td>
-					<td>{{ show.obtained === 1 ? '&#x2713;' : '&#10060;' }}</td>
+					<th @click="toggleSongListModal(show.id)" scope="row">{{ show.id }}</th>
+					<td @click="toggleSongListModal(show.id)">{{ show.date }}</td>
+					<td @click="toggleSongListModal(show.id)">{{ show.name }}</td>
+					<td @click="toggleSongListModal(show.id)">{{ show.file_type }}</td>
+					<td @click="toggleSongListModal(show.id)">{{ show.quality }}</td>
+					<td @click="toggleSongListModal(show.id)">
+						{{ show.obtained === 1 ? '&#x2713;' : '&#10060;' }}
+					</td>
 					<td>
 						<a class="btn btn-primary" @click="updateStatus(show.id, show.obtained)">{{
 							show.obtained === 1 ? 'I Lost It..' : 'I Got It!'
 						}}</a>
 					</td>
-					<td>
-						<a @click="toggleModal(show.id)" class="btn btn-info">Edit</a>
+					<td @click="toggleEditModal(show.id)">
+						<a class="btn btn-info">Edit</a>
 					</td>
 					<td><a @click="deleteShow(show.id)" class="btn btn-danger">Delete</a></td>
 				</tr>
@@ -76,13 +85,13 @@
 						filteredShowList[0].name !== 'No Results Found!'
 				"
 			>
-				<tr v-for="show in filteredShowList" :key="show.id">
-					<th scope="row">{{ show.id }}</th>
-					<td>{{ show.date ? show.date : '' }}</td>
-					<td>{{ show.name }}</td>
-					<td>{{ show.file_type }}</td>
-					<td>{{ show.quality }}</td>
-					<td>
+				<tr v-for="show in filteredShowList" :key="show.id" @click="toggleSongListModal(show.id)">
+					<th @click="toggleSongListModal(show.id)" scope="row">{{ show.id }}</th>
+					<td @click="toggleSongListModal(show.id)">{{ show.date ? show.date : '' }}</td>
+					<td @click="toggleSongListModal(show.id)">{{ show.name }}</td>
+					<td @click="toggleSongListModal(show.id)">{{ show.file_type }}</td>
+					<td @click="toggleSongListModal(show.id)">{{ show.quality }}</td>
+					<td @click="toggleSongListModal(show.id)">
 						{{
 							show.obtained === 1 || show.obtained === 0
 								? show.obtained === 1
@@ -100,8 +109,8 @@
 								: ''
 						}}</a>
 					</td>
-					<td>
-						<a @click="toggleModal(show.id)" class="btn btn-info">Edit</a>
+					<td @click="toggleEditModal(show.id)">
+						<a class="btn btn-info">Edit</a>
 					</td>
 					<td><a @click="deleteShow(show.id)" class="btn btn-danger">Delete</a></td>
 				</tr>
@@ -113,6 +122,7 @@
 <script>
 import AddShow from './AddShow.vue';
 import EditShowModal from './EditShowModal.vue';
+import SongListModal from './SongListModal.vue';
 import config from '../../config';
 
 export default {
@@ -120,12 +130,14 @@ export default {
 	components: {
 		AddShow,
 		EditShowModal,
+		SongListModal,
 	},
 	data() {
 		return {
 			showList: [],
 			filteredShowList: [],
-			showModal: false,
+			showEditModal: false,
+			showSongListModal: false,
 			clickedShowId: '',
 			sortColumn: {
 				name: '',
@@ -134,9 +146,13 @@ export default {
 		};
 	},
 	methods: {
-		toggleModal(id) {
+		toggleEditModal(id) {
 			this.clickedShowId = id;
-			this.showModal = true;
+			this.showEditModal = true;
+		},
+		toggleSongListModal(id) {
+			this.clickedShowId = id;
+			this.showSongListModal = true;
 		},
 		updateShowList() {
 			this.showList = this.$store.getters.shows;

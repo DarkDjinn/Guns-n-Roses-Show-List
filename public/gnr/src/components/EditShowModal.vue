@@ -60,7 +60,7 @@ import config from '../../config';
 export default {
 	name: 'EditShowModal',
 	props: {
-		clickedShowId: String,
+		clickedShowId: Number,
 	},
 	data() {
 		return {

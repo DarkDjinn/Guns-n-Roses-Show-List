@@ -70,7 +70,7 @@ module.exports = {
 		}
 	},
 	getShows: async (req, res) => {
-		const q = squel.select().from('shows');
+		const q = squel.select('').from('shows', 's');
 		if (req.params.id) {
 			q.where(`id = ${req.params.id}`);
 		}

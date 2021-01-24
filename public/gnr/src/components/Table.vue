@@ -10,12 +10,22 @@
 		<table class="table mt-2">
 			<thead>
 				<tr>
-					<th scope="col" style="width: 5.00%">#</th>
-					<th scope="col" style="width: 10.00%">Show Date</th>
-					<th scope="col" style="width: 40.00%">Show Name</th>
-					<th scope="col" style="width: 5.00%">Video/Audio</th>
-					<th scope="col" style="width: 5.00%">Quality</th>
-					<th scope="col" style="width: 10.00%">Obtained</th>
+					<th scope="col" style="width: 5.00%" @click="sortBy('id')"><a href="#">#</a></th>
+					<th scope="col" style="width: 10.00%" @click="sortBy('date')">
+						<a href="#">Show Date</a>
+					</th>
+					<th scope="col" style="width: 40.00%" @click="sortBy('name')">
+						<a href="#">Show Name</a>
+					</th>
+					<th scope="col" style="width: 5.00%" @click="sortBy('file_type')">
+						<a href="#">Video/Audio</a>
+					</th>
+					<th scope="col" style="width: 5.00%" @click="sortBy('quality')">
+						<a href="#">Quality</a>
+					</th>
+					<th scope="col" style="width: 10.00%" @click="sortBy('obtained')">
+						<a href="#">Obtained</a>
+					</th>
 					<th scope="col" style="width: 15.00%">Update Status</th>
 					<th scope="col" style="width: 5.00%">Edit</th>
 					<th scope="col" style="width: 5.00%">Delete</th>
@@ -116,6 +126,10 @@ export default {
 			filteredShowList: [],
 			showModal: false,
 			clickedShowId: '',
+			sortColumn: {
+				name: '',
+				direction: '',
+			},
 		};
 	},
 	methods: {
@@ -141,7 +155,18 @@ export default {
 			await this.$store.dispatch('setShows');
 			this.updateShowList();
 		},
-		async editShow() {},
+		async sortBy(column) {
+			if (this.sortColumn.name !== column) {
+				this.sortColumn.name = column;
+				this.sortColumn.direction = 'asc';
+			} else if (this.sortColumn.name === column && this.sortColumn.direction === 'asc') {
+				this.sortColumn.direction = 'desc';
+			} else if (this.sortColumn.name === column && this.sortColumn.direction === 'desc') {
+				this.sortColumn.direction = 'asc';
+			}
+			await this.$store.dispatch('setShows', this.sortColumn);
+			this.updateShowList();
+		},
 		async deleteShow(id) {
 			await window.axios.post('http://10.0.0.49:3423/gnr/show/deleteshow', { id });
 			await this.$store.dispatch('setShows');

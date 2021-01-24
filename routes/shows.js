@@ -74,6 +74,32 @@ module.exports = {
 		if (req.params.id) {
 			q.where(`id = ${req.params.id}`);
 		}
+
+		const sortBy = req.query.sort;
+		const direction = req.query.direction;
+		switch (sortBy) {
+			case 'id':
+				q.order('id', direction);
+				break;
+			case 'date':
+				q.order('date', direction);
+				break;
+			case 'name':
+				q.order('name', direction);
+				break;
+			case 'file_type':
+				q.order('file_type', direction);
+				break;
+			case 'quality':
+				q.order('quality', direction);
+				break;
+			case 'obtained':
+				q.order('obtained', direction);
+				break;
+			default:
+				break;
+		}
+		console.log(q.toString());
 		const shows = await DBQuery(q.toString());
 		res.json({ success: shows });
 	},

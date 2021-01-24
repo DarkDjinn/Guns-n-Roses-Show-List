@@ -28,8 +28,12 @@ export default new Vuex.Store({
 		},
 	},
 	actions: {
-		async setShows(context) {
-			const { data } = await axios.get('http://10.0.0.49:3423/gnr/show/getshows');
+		async setShows(context, sortBy) {
+			const { data } = await axios.get(
+				`http://10.0.0.49:3423/gnr/show/getshows${
+					sortBy && sortBy.name ? `?sort=${sortBy.name}&direction=${sortBy.direction}` : ''
+				}`
+			);
 			context.commit('setShows', data.success);
 		},
 		setFilteredShows(context, shows) {

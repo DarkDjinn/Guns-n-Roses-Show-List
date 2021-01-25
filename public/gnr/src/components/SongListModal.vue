@@ -9,7 +9,6 @@
 						×
 					</button>
 				</div>
-				<!-- Modal body -->
 				<div class="modal-body">
 					<form class="row g-3">
 						<div class="col-auto">
@@ -24,7 +23,9 @@
 							<a @click="addSong" class="btn btn-primary">Add Song</a>
 						</div>
 					</form>
-
+				</div>
+				<!-- Modal body -->
+				<div class="modal-body modal-body-scrollable">
 					<table class="table mt-2">
 						<thead>
 							<tr>
@@ -120,8 +121,8 @@ export default {
 	max-width: 600px;
 }
 
-.modal-body {
-	max-height: calc(100vh - 210px);
+.modal-body-scrollable {
+	max-height: calc(100vh - 310px);
 	overflow-y: auto;
 }
 </style>

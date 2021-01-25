@@ -119,4 +119,9 @@ export default {
 .modal-dialog {
 	max-width: 600px;
 }
+
+.modal-body {
+	max-height: calc(100vh - 210px);
+	overflow-y: auto;
+}
 </style>

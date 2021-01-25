@@ -35,10 +35,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="song in songs" :key="song.song_number">
+							<tr v-for="song in songs" :key="song.id">
 								<td>{{ song.song_number }}</td>
 								<td>{{ song.song_name }}</td>
-								<td><a class="btn btn-danger" @click="deleteSong(song.song_number)">Delete</a></td>
+								<td><a class="btn btn-danger" @click="deleteSong(song.id)">Delete</a></td>
 							</tr>
 						</tbody>
 					</table>
@@ -92,10 +92,9 @@ export default {
 			this.songName = '';
 			this.fetchSongs();
 		},
-		async deleteSong(songNumber) {
+		async deleteSong(songId) {
 			await window.axios.post(`${config.API_URL}/gnr/songs/deletesong`, {
-				showId: this.clickedShowId,
-				songNumber,
+				id: songId,
 			});
 			this.fetchSongs();
 		},

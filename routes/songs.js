@@ -9,7 +9,7 @@ module.exports = {
 		try {
 			const q = squel
 				.select()
-				.fields(['sl.song_number', 'sl.song_name'])
+				.fields(['sl.id', 'sl.song_number', 'sl.song_name'])
 				.from('song_list', 'sl')
 				.join('shows', 's', 'sl.show_id = s.id')
 				.where(`s.id = ${showId}`)
@@ -40,14 +40,9 @@ module.exports = {
 		}
 	},
 	deleteSong: async (req, res) => {
-		const showId = req.body.showId;
-		const songNumber = req.body.songNumber;
+		const id = req.body.id;
 		try {
-			const q = squel
-				.delete()
-				.from('song_list')
-				.where(`show_id = ${showId}`)
-				.where(`song_number = ${songNumber}`);
+			const q = squel.delete().from('song_list').where(`id = ${id}`);
 			await DBQuery(q.toString());
 			res.json({ success: true });
 		} catch (err) {

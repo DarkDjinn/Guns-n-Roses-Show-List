@@ -70,10 +70,24 @@ module.exports = {
 		}
 	},
 	getShows: async (req, res) => {
-		const q = squel.select('').from('shows', 's');
+		const q = squel
+			.select()
+			.fields([
+				's.id',
+				's.date',
+				's.name',
+				's.file_type',
+				's.quality',
+				's.obtained',
+				'sl.song_number',
+				'sl.song_name',
+			])
+			.from('shows', 's');
 		if (req.params.id) {
 			q.where(`id = ${req.params.id}`);
 		}
+
+		q.left_join('song_list', 'sl', 'sl.show_id = s.id');
 
 		const sortBy = req.query.sort;
 		const direction = req.query.direction;
@@ -101,6 +115,34 @@ module.exports = {
 		}
 
 		const shows = await DBQuery(q.toString());
-		res.json({ success: shows });
+		const showsWithSongs = [];
+
+		for (let show of shows) {
+			const songNumber = show.song_number;
+			const songName = show.song_name;
+			delete show.song_number;
+			delete show.song_name;
+
+			if (songNumber && songName) show.songs = [{ song_number: songNumber, song_name: songName }];
+			else show.songs = [];
+
+			let pushed = false;
+
+			if (!showsWithSongs.length) showsWithSongs.push(show);
+			else {
+				for (let [i, v] of showsWithSongs.entries()) {
+					if (v.id === show.id) {
+						showsWithSongs[i].songs.push(show.songs[0]);
+						pushed = true;
+						break;
+					}
+				}
+				if (!pushed) {
+					showsWithSongs.push(show);
+				}
+			}
+		}
+
+		res.json({ success: showsWithSongs });
 	},
 };

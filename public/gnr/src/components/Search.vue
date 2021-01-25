@@ -1,10 +1,12 @@
 <template>
-	<form class="d-flex ml-auto">
+	<form class="d-flex ml-auto flex-column">
+		<small>Search by Show Name / Song Name / Date</small>
 		<input
+			name="searchInput"
 			:value="this.$store.getters.searchTerm"
 			@input="searchInDB"
 			class="form-control me-2"
-			placeholder="Search By Name / Date..."
+			placeholder="Search..."
 			aria-label="Search"
 		/>
 	</form>
@@ -21,7 +23,8 @@ export default {
 				const results = this.$store.getters.shows.filter(
 					show =>
 						show.name.includes(this.$store.getters.searchTerm) ||
-						show.date.includes(this.$store.getters.searchTerm)
+						show.date.includes(this.$store.getters.searchTerm) ||
+						show.songs.find(song => song.song_name.includes(this.$store.getters.searchTerm))
 				);
 				if (results.length) this.$store.dispatch('setFilteredShows', results);
 				else this.$store.dispatch('setFilteredShows', [{ name: 'No Results Found!' }]);
